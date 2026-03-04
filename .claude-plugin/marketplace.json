@@ -1,0 +1,15 @@
+{
+  "name": "my-skills",
+  "owner": {
+    "name": "kubosho"
+  },
+  "plugins": [
+    {
+      "name": "kubosho-skills",
+      "source": "./",
+      "description": "kubosho's skills for Claude Code",
+      "version": "1.0.0",
+      "category": "productivity"
+    }
+  ]
+}

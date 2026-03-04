@@ -1,0 +1,49 @@
+{
+  "skill_name": "pr-description",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a PR description for the following changes. This is a refactoring PR.\n\nCommit log:\n- refactor: extract shared validation into middleware\n- refactor: consolidate error response helpers\n- refactor: remove duplicate config parsing\n\nDiff summary:\n- New file: middleware/validation.go — moved validateRequestBody, validatePagination, validateUUID from 4 handler files\n- New file: errors/responses.go — moved respondError, respondNotFound, respondForbidden from 6 handler files\n- Deleted: helpers_test.go (tests moved to middleware/validation_test.go)\n- Modified: all handler files to use new middleware and error helpers\n- Modified: router.go to register validation middleware\n- Modified: go.sum (no new dependencies)\n\nContext: This is a Go REST API. The previous PR (#15) added 6 new endpoints, which introduced the duplication that this PR cleans up. The API serves a task management app.",
+      "expected_output": "PR description with unified narrative Summary explaining why this refactoring is happening now (after PR #15), Changes with 2-3 primary items only, no mechanical consequences listed separately",
+      "files": [],
+      "assertions": [
+        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary mentions PR #15 or the prior PR as project context for why this refactoring is happening now",
+        "Summary does not contain function names (validateRequestBody, validatePagination, etc.) or file names (validation.go, responses.go)",
+        "Changes section has 5 or fewer items",
+        "No separate Changes item for test file moves, import updates, or go.sum changes",
+        "The description follows Summary → Changes → Test plan structure"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Write a PR description for the following changes. This is a new feature PR.\n\nCommit log:\n- feat: add WebSocket server for real-time notifications\n- feat: add notification persistence layer\n- feat: add client subscription management\n\nDiff summary:\n- New file: ws/server.go — WebSocket upgrade handler, connection pool, broadcast\n- New file: ws/subscription.go — per-user topic subscriptions, unsubscribe on disconnect\n- New file: store/notifications.go — PostgreSQL-backed notification storage with read/unread status\n- New file: store/notifications_test.go — integration tests\n- Modified: router.go — added /ws endpoint\n- Modified: docker-compose.yml — no changes to services, only added test env vars\n- Modified: go.mod, go.sum — added gorilla/websocket v1.5.3\n\nContext: The app is a collaborative document editor. Users have been requesting real-time notifications for comments and mentions. Currently notifications are polled every 30 seconds via REST, causing unnecessary load and delayed feedback. The team decided on WebSockets over SSE because the app will need bidirectional communication for live cursors in a future PR.",
+      "expected_output": "PR description with Summary that explains the user problem (polling delay + load) and why WebSockets was chosen over SSE, Changes listing primary additions without mechanical items like go.mod updates",
+      "files": [],
+      "assertions": [
+        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary explains the user-facing problem (polling delay, unnecessary load)",
+        "Summary mentions the WebSocket vs SSE decision and the reason (bidirectional communication for future live cursors)",
+        "Summary does not contain file names (server.go, subscription.go, notifications.go)",
+        "Changes section has 5 or fewer items",
+        "No separate Changes item for go.mod/go.sum updates or docker-compose.yml changes",
+        "The description follows Summary → Changes → Test plan structure"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write a PR description for the following changes. This is a bug fix PR.\n\nRelated issue: #42 — 'Cursor pagination returns duplicate items when records share the same created_at timestamp'\n\nCommit log:\n- fix: add UUID tie-breaker to cursor pagination\n- test: add regression test for duplicate-timestamp pagination\n\nDiff summary:\n- Modified: pagination.go — cursor now encodes (created_at, uuid) instead of just created_at; query uses (created_at, uuid) > ($1, $2) instead of created_at > $1\n- Modified: pagination_test.go — added TestPaginationDuplicateTimestamp that inserts 5 records with same timestamp and verifies no duplicates across 3 pages\n- Modified: topic_handler.go, session_handler.go, message_handler.go — updated cursor construction to include UUID\n\nContext: A user reported seeing the same topic appear on consecutive pages. Investigation revealed that when multiple records share a created_at timestamp, the old cursor (timestamp-only) couldn't distinguish them, causing the DB to return overlapping results.",
+      "expected_output": "PR description with Summary explaining the user-reported bug and root cause (timestamp-only cursor), Changes with the fix approach (UUID tie-breaker), no separate items for test additions or handler updates",
+      "files": [],
+      "assertions": [
+        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary references issue #42 or describes the user-reported bug (duplicate items on consecutive pages)",
+        "Summary explains the root cause (timestamp-only cursor cannot distinguish records with same created_at)",
+        "Summary does not list individual modified files (pagination.go, topic_handler.go, etc.)",
+        "Changes section has 5 or fewer items",
+        "No separate Changes item for test additions or handler cursor construction updates",
+        "The description follows Summary → Changes → Test plan structure"
+      ]
+    }
+  ]
+}
