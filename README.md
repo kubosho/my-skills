@@ -12,9 +12,22 @@ A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-market
 
 ## Install
 
+Install via the Claude Code plugin marketplace:
+
 ```shell
 /plugin marketplace add kubosho/my-skills
 /plugin install kubosho-skills@my-skills
+```
+
+Or clone the repository and symlink individual skills:
+
+```shell
+git clone https://github.com/kubosho/my-skills.git
+
+# Symlink each skill you want to use
+ln -s /path/to/my-skills/skills/anti-slop-code ~/.claude/skills/anti-slop-code
+ln -s /path/to/my-skills/skills/baseline ~/.claude/skills/baseline
+ln -s /path/to/my-skills/skills/pr-description ~/.claude/skills/pr-description
 ```
 
 ## License
