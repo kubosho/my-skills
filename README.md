@@ -9,6 +9,7 @@ A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-market
 | `anti-slop-code` | Write intentional, minimal code that avoids generic AI-generated patterns |
 | `baseline` | Check Baseline status of web features via Web Platform Status API |
 | `pr-description` | Write narrative-driven PR descriptions with Summary, Changes, Test plan structure |
+| `test-principles` | Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada |
 
 ## Install
 
