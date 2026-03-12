@@ -29,6 +29,7 @@ git clone https://github.com/kubosho/my-skills.git
 ln -s /path/to/my-skills/skills/anti-slop-code ~/.claude/skills/anti-slop-code
 ln -s /path/to/my-skills/skills/baseline ~/.claude/skills/baseline
 ln -s /path/to/my-skills/skills/pr-description ~/.claude/skills/pr-description
+ln -s /path/to/my-skills/skills/test-principles ~/.claude/skills/test-principles
 ```
 
 ## License
