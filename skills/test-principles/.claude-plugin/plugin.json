@@ -1,0 +1,7 @@
+{
+  "name": "test-principles",
+  "description": "Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada",
+  "author": {
+    "name": "kubosho"
+  }
+}
