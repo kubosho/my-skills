@@ -1,9 +1,0 @@
-{
-  "name": "kubosho-skills",
-  "description": "kubosho's skills for Claude Code",
-  "author": {
-    "name": "kubosho"
-  },
-  "repository": "https://github.com/kubosho/my-skills",
-  "license": "MIT"
-}
