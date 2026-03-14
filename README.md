@@ -13,11 +13,14 @@ A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-market
 
 ## Install
 
-Install via the Claude Code plugin marketplace:
+Add the marketplace and install individual skills:
 
 ```shell
 /plugin marketplace add kubosho/my-skills
-/plugin install kubosho-skills@my-skills
+/plugin install anti-slop-code@kubosho-skills
+/plugin install baseline@kubosho-skills
+/plugin install pr-description@kubosho-skills
+/plugin install test-principles@kubosho-skills
 ```
 
 Or clone the repository and symlink individual skills:
