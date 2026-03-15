@@ -1,9 +1,6 @@
 ---
 name: baseline
-description: |
-  Check Baseline status of web features using the Web Platform Status API.
-  Triggers: "baseline", "ベースライン", "ブラウザ対応状況", "browser support", "web feature status"
-  Use cases: (1) check if a web feature is widely/newly available, (2) check browser support for a feature, (3) find features not available in a specific browser
+description: Check Baseline status of web features using the Web Platform Status API. Use when the user mentions "baseline", "ベースライン", "ブラウザ対応状況", "browser support", or "web feature status". Checks whether a web feature is widely or newly available, queries browser support details, and finds features not available in a specific browser.
 argument-hint: "<feature name, structured query, or natural language, e.g. 'popover', 'Promise.withResolvers', 'not:firefox', 'Safariで使えないCSS機能'>"
 ---
 
