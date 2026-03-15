@@ -1,6 +1,6 @@
 ---
 name: pr-description
-description: Write narrative-driven PR descriptions with Summary→Changes→Test plan structure. Use when creating a PR (gh pr create), writing or rewriting PR body text, or improving an existing PR description.
+description: Write narrative-driven PR descriptions with Summary→Changes→Test plan structure. Use when creating a PR (gh pr create), writing or rewriting PR body text, improving an existing PR description, or when the user says "PR説明文", "PRの説明を書いて", or "pull requestの説明".
 ---
 
 The diff shows what changed. The description adds what the diff cannot: why this change exists and what decisions shaped it.
