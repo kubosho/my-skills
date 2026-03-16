@@ -1,7 +1,7 @@
 {
   "name": "pr-description",
   "description": "Write narrative-driven PR descriptions with Summary, Changes, Test plan structure",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "author": {
     "name": "kubosho"
   }
