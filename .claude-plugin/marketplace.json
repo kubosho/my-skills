@@ -10,39 +10,31 @@
   "plugins": [
     {
       "name": "anti-slop-code",
-      "source": "./",
+      "source": "./plugins/anti-slop-code",
       "description": "Write intentional, minimal, context-aware code that avoids generic AI-generated patterns",
       "version": "2.1.0",
-      "category": "productivity",
-      "strict": false,
-      "skills": ["./skills/anti-slop-code"]
+      "category": "productivity"
     },
     {
       "name": "baseline",
-      "source": "./",
+      "source": "./plugins/baseline",
       "description": "Check Baseline status of web features using the Web Platform Status API",
       "version": "2.1.0",
-      "category": "development",
-      "strict": false,
-      "skills": ["./skills/baseline"]
+      "category": "development"
     },
     {
       "name": "pr-description",
-      "source": "./",
+      "source": "./plugins/pr-description",
       "description": "Write narrative-driven PR descriptions with Summary, Changes, Test plan structure",
       "version": "2.1.0",
-      "category": "productivity",
-      "strict": false,
-      "skills": ["./skills/pr-description"]
+      "category": "productivity"
     },
     {
       "name": "test-principles",
-      "source": "./",
+      "source": "./plugins/test-principles",
       "description": "Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada",
       "version": "2.1.0",
-      "category": "development",
-      "strict": false,
-      "skills": ["./skills/test-principles"]
+      "category": "development"
     }
   ]
 }

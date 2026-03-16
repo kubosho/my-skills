@@ -1,0 +1,8 @@
+{
+  "name": "anti-slop-code",
+  "description": "Write intentional, minimal, context-aware code that avoids generic AI-generated patterns",
+  "version": "2.1.0",
+  "author": {
+    "name": "kubosho"
+  }
+}

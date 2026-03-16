@@ -1,0 +1,8 @@
+{
+  "name": "baseline",
+  "description": "Check Baseline status of web features using the Web Platform Status API",
+  "version": "2.1.0",
+  "author": {
+    "name": "kubosho"
+  }
+}
