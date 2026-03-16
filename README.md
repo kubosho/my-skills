@@ -29,10 +29,10 @@ Or clone the repository and symlink individual skills:
 git clone https://github.com/kubosho/my-skills.git
 
 # Symlink each skill you want to use
-ln -s /path/to/my-skills/skills/anti-slop-code ~/.claude/skills/anti-slop-code
-ln -s /path/to/my-skills/skills/baseline ~/.claude/skills/baseline
-ln -s /path/to/my-skills/skills/pr-description ~/.claude/skills/pr-description
-ln -s /path/to/my-skills/skills/test-principles ~/.claude/skills/test-principles
+ln -s /path/to/my-skills/plugins/anti-slop-code ~/.claude/skills/anti-slop-code
+ln -s /path/to/my-skills/plugins/baseline ~/.claude/skills/baseline
+ln -s /path/to/my-skills/plugins/pr-description ~/.claude/skills/pr-description
+ln -s /path/to/my-skills/plugins/test-principles ~/.claude/skills/test-principles
 ```
 
 ## License
