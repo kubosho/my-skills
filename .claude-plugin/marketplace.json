@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "kubosho's Claude Code skills",
-    "version": "2.1.1"
+    "version": "2.2.0"
   },
   "plugins": [
     {
@@ -26,7 +26,7 @@
       "name": "pr-description",
       "source": "./plugins/pr-description",
       "description": "Write narrative-driven PR descriptions with Summary, Changes, Test plan structure",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "category": "productivity"
     },
     {
