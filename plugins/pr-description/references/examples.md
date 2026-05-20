@@ -1,12 +1,28 @@
 # PR Description Examples
 
-Real editing history from a refactoring PR that went through 4 revisions. Each version fixes a specific problem, showing how to arrive at a good PR description.
+PR Summary の「悪い例」と「良い例」を対比で見せる例集です。SKILL.md の原則だけだと抽象的になりがちな部分を、具体的な書き直しの差分で補います。
+
+## 目次
+
+| シナリオ | 学べること | 形式 |
+|---|---|---|
+| [Refactoring (英)](#refactoring-pr-example-英語進化メカニズム) | 段階的に書き直すと何が直るか | v1 → v4 の 4 段階 |
+| [Refactoring (日)](#refactoring-pr-example-日本語結論レベルへの抽象化) | 結論レベルまで抽象化する | Before / After |
+| [Tool Introduction (日)](#tool-introduction-pr-example-判断根拠の重要性) | 「なぜこの選定か」を語る | Before / After |
+| [Large Migration (日)](#large-migration-pr-example-長い-pr-の構造化) | 長い PR を見出しで構造化する | Before / After |
+| [Bug-fix (日)](#bug-fix-pr-example-多段現象の構造化) | 多段の再現手順を番号付きリストで | Before / After |
+
+「進化メカニズム」を最初に英語例で 1 度だけ見せ、それ以降は各シナリオで Before / After の対比だけを示します。中間段階の修正過程は最初の例から類推してください。
+
+---
+
+# Refactoring PR Example (英語、進化メカニズム)
 
 ## The PR
 
 Consolidate duplicated patterns (user lookup, pagination helpers, error messages) across 13 API handlers into shared middleware and utilities. Pure refactoring, no behavioral changes.
 
-## v1 — Diff summary as bullet list
+## v1: Diff summary as bullet list
 
 ```markdown
 ## Summary
@@ -24,11 +40,11 @@ Consolidate duplicated patterns (user lookup, pagination helpers, error messages
 
 **Problems:**
 - Summary is a bullet list of what changed, not why this PR exists
-- File names and function names in every bullet - this is implementation detail, not motivation
+- File names and function names in every bullet, this is implementation detail, not motivation
 - No project context: what happened before this PR that created the duplication?
 - A reviewer reading only this Summary still doesn't know *why now*
 
-## v2 — Per-change paragraphs
+## v2: Per-change paragraphs
 
 ```markdown
 ## Summary
@@ -39,7 +55,7 @@ different handlers. This made it unclear where to find pagination logic and
 risked accidental breakage when editing topic-specific code. They are now in
 a dedicated `pagination.go`.
 
-The ownership-check error message was inconsistent — `topic_handler.go`
+The ownership-check error message was inconsistent. `topic_handler.go`
 returned `"access denied"` while every other handler returned `"forbidden"`
 for the same 403 scenario. Unified to `"forbidden"` so clients can rely on
 a single error string.
@@ -51,15 +67,15 @@ A new `userMiddleware` performs the lookup once and stores the result in the
 Echo context, matching the existing `firebaseAuthMiddleware` pattern. Handlers
 now call `getUser(c)` instead.
 
-No logic changes — only code movement, message alignment, and deduplication.
+No logic changes, only code movement, message alignment, and deduplication.
 ```
 
 **Better, but:**
-- Each change gets its own paragraph with its own problem→solution arc - three mini-narratives instead of one
+- Each change gets its own paragraph with its own problem→solution arc, three mini-narratives instead of one
 - Summary still contains implementation details (`pagination.go`, `getUser(c)`, `Echo context`)
 - Reads like three separate PRs stitched together, not one cohesive change
 
-## v3 — Separated Summary/Changes, but Changes is bloated
+## v3: Separated Summary/Changes, but Changes is bloated
 
 ```markdown
 ## Summary
@@ -69,7 +85,7 @@ Several shared helpers (`PaginatedResponse`, `parsePaginationParams`,
 different handlers. This made it unclear where to find pagination logic and
 risked accidental breakage when editing topic-specific code.
 
-The ownership-check error message was inconsistent — `topic_handler.go`
+The ownership-check error message was inconsistent. `topic_handler.go`
 returned `"access denied"` while every other handler returned `"forbidden"`
 for the same 403 scenario. Clients couldn't rely on a single error string
 for ownership failures.
@@ -78,7 +94,7 @@ Every protected handler repeated the same 5-line `getFirebaseUID` →
 `GetUserByFirebaseUID` → 404 pattern (13 occurrences). Any change to
 user-lookup behavior required editing every handler file.
 
-No logic changes — only code movement, message alignment, and deduplication.
+No logic changes, only code movement, message alignment, and deduplication.
 
 ## Changes
 
@@ -100,14 +116,10 @@ No logic changes — only code movement, message alignment, and deduplication.
 **Progress:**
 - Summary/Changes separation is correct
 - But Summary is still three per-change paragraphs, not a unified narrative
-- Changes has 7 items. Items 4-7 are mechanical consequences of items 1-3:
-  - "Add `getUser(c)` context accessor" follows naturally from adding `userMiddleware`
-  - "Replace the 5-line block in all 13 handlers" is the whole point of the middleware
-  - "Split route groups" is a routing adjustment implied by the middleware
-  - "Update `integration_test.go`" is a test update implied by the middleware
+- Changes has 7 items. Items 4-7 are mechanical consequences of items 1-3
 - A reviewer seeing 7 items thinks "large PR", but only 3 things actually happened
 
-## v4 (final) — Summary tells the whole story
+## v4 (final): Summary tells the whole story
 
 ```markdown
 ## Summary
@@ -126,31 +138,61 @@ No behavioral changes.
 ```
 
 **Why this works:**
-- Summary uses paragraph breaks. First paragraph: context (prior PR created duplication). Second paragraph: approach and judgment for each consolidation. Third paragraph: scope
-- No Changes section. The diff shows what moved where. Summary adds *why* each consolidation was needed ("had no clear owner", "had diverged", "instead of following the existing pattern")
-- No lists appended with dashes or colons. Each judgment is its own sentence
+- Three paragraphs: context, approach with judgment, scope
+- No Changes section. The diff shows what moved where. Summary adds *why* each consolidation was needed
+- Each judgment is its own sentence
 
-## Summary of the progression
+## Progression at a glance
 
-| Version | Anti-pattern | Fix applied |
+| Step | Anti-pattern | Fix applied |
 |---|---|---|
-| v1 → v2 | Bullet list of "what changed" instead of narrative of "why" | Added motivation (problem → solution) per change |
+| v1 → v2 | Bullet list of "what changed" instead of narrative of "why" | Added motivation per change |
 | v2 → v3 | Implementation details mixed into Summary | Separated Summary from Changes |
 | v3 → v4 | Per-change paragraphs + redundant Changes section | Unified narrative with judgment in Summary, no Changes |
 
-The lesson here is about diff-restating bullet lists, not about lists in general. Lists are fine when they enumerate genuinely parallel items or sequential steps. They hurt when they replace a narrative with a flat retelling of the diff.
+この英語例だけ 4 段階に展開しているのは、Summary を書き直すと何がどう直るかを順を追って示すためです。以降の例では同じメカニズムを Before / After の対比だけで示します。
 
 ---
 
-# Tool Introduction PR Example
+# Refactoring PR Example (日本語、結論レベルへの抽象化)
 
-Real editing history from a linter introduction PR that went through 3 revisions. Covers a pattern not shown in the refactoring example above: introducing a new tool where the key information is *why this tool* and *what judgment calls were made in configuration*.
+複数の画面コンポーネントに同じ fetch / loading / error の状態管理パターンが散らばっていたものを、共通カスタムフックに集約する PR。挙動の変更なし。
 
-## The PR
+## Before (実装名を Summary に列挙してしまった版)
 
-Introduce textlint to a documentation-heavy repository to catch common writing issues (redundant expressions, incorrect terminology) automatically via pre-commit hook and CI.
+```markdown
+## Summary
 
-## v1 — Implementation dump
+直近の機能追加で新しい画面が増え、どの画面でも fetch、loading 表示、error ハンドリングのコードがほぼ同じ形で繰り返されるようになりました。コピーペーストが進むほど、ロード中スピナーの仕様変更やエラー文言の統一が漏れやすくなります。
+
+そこで `useResource` というカスタムフックを新設し、`UserProfile`、`OrderList`、`SettingsPanel` をこのフックに置き換えました。fetch、loading state、error state の管理が 1 か所にまとまるため、今後の挙動変更も 1 か所で済みます。
+
+挙動の変更はありません。
+```
+
+## After (結論レベルまで抽象化した版)
+
+```markdown
+## Summary
+
+直近の機能追加で画面が増え、どの画面でも fetch と loading / error 表示のコードが似た形でコピーされるようになりました。仕様変更やエラー文言の統一が、画面ごとに同じ修正を繰り返す作業に化けていたため、ここで共通化します。
+
+主要な画面の状態管理ロジックをカスタムフックに集約しました。これによって今後、ロード中表示やエラー時の挙動を変える際に、フックを 1 か所触れば全画面に反映できます。
+
+挙動の変更はありません。既存のテストは引き続き通ります。
+```
+
+## Lesson
+
+Before では「`UserProfile`、`OrderList`、`SettingsPanel`」「fetch、loading state、error state」と画面名や項目を列挙していました。これらは diff を見れば分かる情報です。After では「主要な画面」「状態管理ロジック」と一段階上の抽象に持ち上げ、Summary では「変えれば全画面に効く」という判断軸だけが残るようにしています。実装の列挙を Summary に書きたくなったら、その上位概念で言い換えられないか試してください。
+
+---
+
+# Tool Introduction PR Example (判断根拠の重要性)
+
+ドキュメント中心リポジトリに textlint を導入し、表記ゆれや冗長表現を pre-commit / CI で自動検出する PR。
+
+## Before (実装ダンプ、判断根拠なし)
 
 ```markdown
 ## Summary
@@ -174,35 +216,7 @@ textlint-rule-preset-jtf-style を設定し、pre-commit hook で自動実行さ
 - [x] CI が通ることを確認
 ```
 
-**Problems:**
-- Summary にファイル数(30)、プリセット名、pre-commit hook など実装詳細が漏れ出ている
-- なぜ textlint なのか、なぜこのプリセットなのかの判断根拠がない
-- 括弧とセミコロンで1行に詰め込んでおり読みにくい
-- ツールへのリンクがない
-- Test plan はドキュメント変更が主なので不要
-
-## v2 — Judgment added but structure still flat
-
-```markdown
-## Summary
-
-ドキュメントのレビューで表記ゆれや冗長表現の指摘が繰り返されていた。人手で毎回拾うのはコストが高いため、自動検出できる仕組みが必要だと考えた。
-
-textlint は日本語の技術文書向けプリセットが充実しており、既存の ESLint/Prettier と同じ Node.js ツールチェインに乗るため導入コストが低いと判断した。
-
-## Changes
-
-- textlint の設定を追加（preset-ja-technical-writing をベースに、句読点スタイルは既存ドキュメントに合わせて無効化）
-- pre-commit hook と CI ワークフローで自動実行されるように設定
-- 既存ドキュメントの指摘箇所を修正
-```
-
-**Better, but:**
-- Changes の1項目目で括弧内に設定判断の説明を詰め込んでいる。サブリストで分けるべき
-- textlint へのリンクがない
-- Test plan がまだ残っている（ドキュメント修正とツール設定だけなので不要）
-
-## v3 (final) — Judgment in Summary, no Changes
+## After (判断根拠を Summary に、Changes / Test plan は省略)
 
 ```markdown
 ## Summary
@@ -214,31 +228,90 @@ textlint は日本語の技術文書向けプリセットが充実しており�
 設定は preset-ja-technical-writing と preset-jtf-style をベースにしています。sentence-length ルールは既存ドキュメントがデフォルト上限を超える箇所が多く、全修正はこの PR のスコープ外のため無効化しました。
 ```
 
-**Why this works:**
-- 1段落目で「なぜ必要か」、2段落目で「なぜ textlint か」の判断根拠、3段落目で設定の判断理由を説明している
-- textlint へのリンクがあり、レビュアーがツールを知らなくても参照できる
-- Changes セクションはない。diff で分かる「何をしたか」を繰り返す代わりに、「なぜそうしたか」を Summary の段落として書いている
-- ファイル数やファイル名は diff で分かるので書いていない
-- Test plan はドキュメント修正とツール設定のみの PR なので省略している
+## Lesson
 
-## Summary of the progression
-
-| Version | Anti-pattern | Fix applied |
-|---|---|---|
-| v1 → v2 | Implementation details in Summary, no judgment | Added motivation and tool selection reasoning |
-| v2 → v3 | Separate Changes section that restates the diff, unnecessary Test plan | Judgment folded into Summary paragraphs, no Changes, no Test plan |
+ツール導入 PR で本当にレビューしてほしいのは「やったこと」ではなく「なぜそのツールを選んだか / なぜその設定にしたか」の判断です。Before はファイル名やプリセット名で埋まっていますが、判断根拠は読み取れません。After では 1 段落目で動機、2 段落目でツール選定の判断（代替案との比較含む）、3 段落目で設定判断、と段落ごとに 1 つの判断を語っています。ツール名にリンクを置くと、知らないレビュアーがすぐ確認できます。ドキュメント / 設定変更だけの PR なら Test plan も省略してかまいません。
 
 ---
 
-# Bug-fix PR Example (multi-step reproduction)
+# Large Migration PR Example (長い PR の構造化)
 
-Real editing history from a bug-fix PR that went through 3 revisions. Covers the case the refactoring and tool-introduction examples don't: a bug whose reproduction is a multi-step sequence and whose root cause involves runtime internals. Structure (numbered lists, subheadings) helps reviewers scan the flow. Internal mechanism details belong in a linked Plan, not the Summary.
+本番 RDB を PostgreSQL 12 から 16 にメジャーバージョンアップする PR。互換性検証で見つかったクエリ修正、監視閾値の更新、ロールアウト計画までを 1 PR にまとめる。メンテナンス枠は深夜 30 分以内。
 
-## The PR
+## Before (動機なく Changes を並べただけ)
 
-A checkout page intermittently submits the order twice when the user navigates back from the confirmation screen and then re-submits. Roughly 0.4% of checkout sessions are affected, triggering duplicate-charge alerts. The fix gates the submit handler on a per-navigation token and links to the Plan that documents the History API behavior involved.
+```markdown
+## Summary
 
-## v1 — Prose-only, multi-step flow crammed into one paragraph
+PostgreSQL を 12 から 16 にアップグレードします。pg_upgrade を使用します。検証環境ではすでに動作確認済みです。
+
+## Changes
+- PostgreSQL バージョンを 12 から 16 に変更
+- 古いクエリを 2 つ修正
+- 監視閾値を変更
+- Runbook を追加
+
+## Test plan
+- [x] 検証環境でアップグレードを実施
+- [x] 全 API のスモークテスト
+```
+
+## After (見出しで構造化、判断は Plan / Runbook にリンク)
+
+```markdown
+## Summary
+
+### 背景
+
+PostgreSQL 12 のコミュニティサポートが 2026/11 で終了します。EOL 後にセキュリティパッチが当たらないリスクを避けるため、サポート期間中に PG16 まで一気に上げます。
+
+### アプローチ
+
+メンテナンス枠が深夜 30 分以内という制約に収めるため、`pg_upgrade --link` モードを採用しました。dump/restore はデータ量 (約 800GB) で 4〜6 時間かかるため不可、論理レプリケーションと Blue-Green デプロイは運用負荷とディスク容量の観点で本 PR のスコープでは見送っています。手段比較の詳細は [Plan: 2026-04-30-postgres-upgrade-strategy](https://example.invalid/plans/2026-04-30-postgres-upgrade-strategy) を参照してください。
+
+### 影響と対応
+
+互換性検証で挙動が変わるクエリが 3 件見つかったため、本 PR で修正しています。
+
+1. PG13 で `string_agg` の NULL 引数の扱いが変わった影響を受けるクエリ (2 件)
+2. PG14 で `regexp_match` の戻り型が変わった影響を受けるクエリ (1 件)
+
+具体的な変更点は diff を参照してください。両方とも [PostgreSQL リリースノート](https://example.invalid/postgres-release-notes) に記載のある仕様変更で、内部挙動の詳細は Plan に整理しています。
+
+監視ダッシュボードは PG16 で再設計されたバッファマネージャ統計に合わせ、buffer_hit_ratio とコネクション数の閾値を再キャリブレーションしました。古い閾値のままだと PG16 で誤検知が増えるため、同 PR に含めています。
+
+### ロールアウト
+
+dev → staging → prod の順で進めます。staging では 5/15 から 1 週間流し、エラー率と p95 レイテンシに有意な変化がないことを確認済みです。本番投入は 5/30 深夜 2:00 - 2:30 のメンテナンス枠を予約しています。
+
+### スコープ外
+
+論理レプリケーションの導入は本 PR には含みません。別 PR (#412) で対応します。今回は in-place アップグレードに専念し、レプリケーション構成の変更は分離しています。
+
+## 関連リンク
+
+- [Plan: 2026-04-30-postgres-upgrade-strategy](https://example.invalid/plans/2026-04-30-postgres-upgrade-strategy)
+- [Runbook: PostgreSQL アップグレード手順](https://example.invalid/runbooks/postgres-upgrade)
+- 別 PR #412 (論理レプリケーション導入)
+
+## Test plan
+- [x] dev 環境で `pg_upgrade --link` を実施し、全 API のスモークテストが通ることを確認
+- [x] staging 環境で 1 週間運用 (5/15 〜 5/22)、エラー率と p95 レイテンシに有意な変化がないことを確認
+- [ ] 本番投入 (5/30 深夜 2:00 - 2:30)
+- [ ] 本番投入後 24 時間のメトリクスモニタリング
+```
+
+## Lesson
+
+Summary が長くなる PR でも、見出しで切ると読みやすさは落ちません。逆に、長くなる必然性のない情報（4 手段の比較詳細、PG 内部仕様の解説など）を Summary に詰め込むと、長さに比例して読みにくくなります。「### 背景 / ### アプローチ / ### 影響と対応 / ### ロールアウト / ### スコープ外」と機能ごとに見出しを切り、内部詳細は Plan や Runbook へのリンクに逃がす、という構造が長い PR では効きます。冒頭の「### 背景」は非エンジニアレビュアー（PM / SRE / セキュリティ）が真っ先に読むパートとして使えます。
+
+---
+
+# Bug-fix PR Example (多段現象の構造化)
+
+決済確定画面で二重決済が発生する PR。再現は多段の手順で、根本原因がブラウザ内部の race にあるため、Plan へのリンクで詳細を逃がす必要がある。
+
+## Before (多段の再現手順を 1 段落に圧縮)
 
 ```markdown
 ## Summary
@@ -246,34 +319,7 @@ A checkout page intermittently submits the order twice when the user navigates b
 決済確定画面で二重決済の問い合わせが断続的に発生していました。再現する流れとしては、ユーザーが確認画面から「戻る」で入力画面に戻り、もう一度「確認」ボタンを押すと submit ハンドラが過去のナビゲーションに紐づいた状態を保持したまま再発火し、サーバー側は別リクエストとして処理されるため同一注文が 2 件作成される、という挙動になっていました。修正としては、ナビゲーションごとにトークンを発行し、submit ハンドラがトークン不一致を検出した場合は早期 return するようにしました。
 ```
 
-**Problems:**
-
-- 再現手順が 1 段落に詰め込まれており、レビュアーが流れを追うのに 2 回読み直す必要がある
-- 「ビジネス影響」（二重決済アラート / 影響セッション率）が冒頭にない。非エンジニアのレビュアーが温度感を掴めない
-- 「修正としては」が散文に埋もれており、変更の主軸がスキャンしづらい
-
-## v2 — Plan の内部解析まで PR Summary に流し込んだ過剰版
-
-```markdown
-## Summary
-
-決済確定画面で二重決済の問い合わせが断続的に発生していました。0.4% の checkout セッションが影響を受け、duplicate-charge アラートを継続的に発火させていました。
-
-ブラウザの History API では popstate イベント発火時に history entry の state が以前のスナップショットを保持し続けます。Chromium ソースを確認したところ、`NavigationController::HandleRendererDebugURL` 周辺で state restore のタイミングが session history の traversal direction によって変わるため、`history.replaceState` 直後の `popstate` で古い state が混入する可能性があります。さらに React Router の `useNavigate` は内部的に history.push を呼び出す前に `useRef` で保持した previous state を参照しており、これと組み合わさると submit ハンドラに渡される navigation context が 1 ステップ古い状態になります。
-
-このため、ナビゲーションごとにトークンを発行し、submit ハンドラがトークン不一致を検出した場合は早期 return するようにしました。トークン方式は厳密にはレースを完全に防ぐわけではありませんが、観測された不整合のうち 99% 以上はこのパスで吸収できます。RFC 7231 の冪等性ガイドラインも参照しましたが、今回のスコープでは冪等キーをサーバー側に追加するより前段で弾く方が低リスクと判断しました。
-
-なお、Safari と Firefox では再現せず、Chromium 系のみで観測されています。ただし他ブラウザでも同等の race が潜在的に起こりうるため、ブラウザ判定で分岐する方針は取りませんでした。
-```
-
-**Problems:**
-
-- Chromium 内部ソースの参照や React Router の `useRef` 挙動は Plan / 調査メモに残すべき内容で、PR Summary には冗長
-- 「99% 以上のパスで吸収」「RFC 7231 を参照したが冪等キーは見送り」といった alternative 検討の歴史も Plan のスコープ
-- 5 段落 / 約 1000 字に達しており、レビュアーが意思決定に必要な情報を取り出すコストが高い
-- 再現手順は依然として散文で、流れを追いづらい
-
-## v3 (final) — Business impact 冒頭 + 構造化された再現手順 + Plan へのリンク
+## After (ビジネス影響 + 番号付きリスト + Plan リンク)
 
 ```markdown
 ## Summary
@@ -297,17 +343,6 @@ A checkout page intermittently submits the order twice when the user navigates b
 冪等キーをサーバー側に追加する案も検討しましたが、Plan に記載のとおり今回のスコープでは見送っています。
 ```
 
-**Why this works:**
+## Lesson
 
-- 冒頭で「二重決済」「アラート発火」「影響セッション率」を提示し、非エンジニアのレビュアーも温度感を共有できる
-- 再現手順を番号付きリストにしたことで、レビュアーは流れを 1 回スキャンするだけで把握できる
-- 内部メカニズム（History API の挙動、React Router の挙動、Chromium 内部）はすべて Plan へのリンクに集約し、Summary は意思決定と結果に集中している
-- `### 修正内容` 見出しで「現象」と「対策」が視覚的に分離され、長めの Summary でもスクロールしやすい
-- 検討して見送った代替案は 1 行 + リンクで触れるだけで、Plan の議論を Summary に流し込んでいない
-
-## Summary of the progression
-
-| Version | Anti-pattern | Fix applied |
-|---|---|---|
-| v1 → v2 | 多段の再現手順を 1 段落に圧縮、ビジネス影響なし | ビジネス影響を冒頭に追加、根本原因に踏み込んだ |
-| v2 → v3 | Plan / 調査メモの内部解析を Summary に流し込み、長大化 | 内部詳細は Plan リンクに外出し、再現手順を番号付きリストで構造化、検討済み代替案は 1 行に圧縮 |
+Before の問題は 2 つあります。まず冒頭にビジネス影響（アラート発火、影響セッション率）がないため、非エンジニアのレビュアーが温度感をつかめません。次に、3 段階の再現手順を散文 1 段落で書いており、レビュアーが流れを把握するのに読み直しが必要です。After では冒頭で影響を提示し、再現手順を番号付きリスト化することで、1 回スキャンするだけで把握できる構造にしています。ブラウザ内部や React Router の内部挙動などの根本原因詳細は Plan へのリンクに集約し、Summary には「ブラウザ History API と SPA navigation state の race」という結論レベルの 1 文だけ残します。検討して見送った代替案も 1 行 + Plan リンクで足ります。

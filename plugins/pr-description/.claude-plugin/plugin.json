@@ -1,7 +1,7 @@
 {
   "name": "pr-description",
   "description": "Write narrative-driven PR descriptions that honor the repository's PR template and respect the boundary between PR Summary, commit messages, and design docs",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "author": {
     "name": "kubosho"
   }
