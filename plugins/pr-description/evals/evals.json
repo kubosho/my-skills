@@ -7,7 +7,7 @@
       "expected_output": "PR description with Summary-only narrative explaining why this refactoring is happening now (after PR #15), including judgment on why each consolidation was needed",
       "files": [],
       "assertions": [
-        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary uses prose for rationale rather than a bullet list that restates the diff",
         "Summary mentions PR #15 or the prior PR as project context for why this refactoring is happening now",
         "Summary does not contain function names (validateRequestBody, validatePagination, etc.) or file names (validation.go, responses.go)",
         "Summary includes judgment on why the changes were needed, not just what was done",
@@ -21,7 +21,7 @@
       "expected_output": "PR description with Summary explaining the user problem (polling delay + load), why WebSockets over SSE, and what was introduced",
       "files": [],
       "assertions": [
-        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary uses prose paragraphs for rationale rather than a bullet list that restates the diff",
         "Summary explains the user-facing problem (polling delay, unnecessary load)",
         "Summary mentions the WebSocket vs SSE decision and the reason (bidirectional communication for future live cursors)",
         "Summary does not contain file names (server.go, subscription.go, notifications.go)",
@@ -35,7 +35,7 @@
       "expected_output": "PR description with Summary explaining the bug, root cause, and fix approach with judgment on why UUID tie-breaker was chosen",
       "files": [],
       "assertions": [
-        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary uses prose for rationale, not a bullet list that restates the diff",
         "Summary references issue #42 or describes the user-reported bug (duplicate items on consecutive pages)",
         "Summary explains the root cause (timestamp-only cursor cannot distinguish records with same created_at)",
         "Summary explains the fix approach and why it was chosen",
@@ -49,7 +49,7 @@
       "expected_output": "PR description with Summary explaining the repeated review problem, why textlint was chosen, and configuration judgment. No Changes section, no Test plan",
       "files": [],
       "assertions": [
-        "Summary is written as prose paragraphs, not a bullet list",
+        "Summary uses prose paragraphs for rationale rather than a bullet list that restates the diff",
         "Summary explains why automated linting is needed (repeated review feedback on writing issues)",
         "Summary mentions the tool selection rationale (textlint chosen over alternatives, Japanese presets, Node.js toolchain)",
         "Summary includes a link to textlint or describes it in a way a reviewer unfamiliar with the tool can understand",
@@ -57,6 +57,34 @@
         "Summary does not contain file counts (24 files) or file names (.textlintrc.json)",
         "No em dashes in the output",
         "Test plan section is omitted (documentation and config changes only)"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write a PR description for the following changes.\n\nThe repository has a PR template at `.github/pull_request_template.md` with this exact content:\n\n```\n## 概要\n<!-- 1-2行で、なぜこの変更が必要かを書いてください。やったことの詳細はコミットメッセージに含めてください。 -->\n\n## 関連リンク\n<!-- 関連 issue / Plan / Slack スレッドなど。なければ削除してください。 -->\n\n## 動作確認\n- [ ] 単体テストが通る\n- [ ] 該当エンドポイントを手動で叩いて確認した\n```\n\nCommit log:\n- fix: prevent double-charge on checkout retry\n- test: add regression test for retry path\n- refactor: extract retry guard into helper\n\nDiff summary:\n- Modified: checkout/handler.go — added idempotency key check before charging\n- Modified: checkout/handler_test.go — added TestRetryDoesNotDoubleCharge\n- New file: checkout/retry_guard.go — extracted the guard helper\n- Modified: store/payment.go — added GetChargeByIdempotencyKey\n\nContext: A user-reported issue (#88) showed that when the network drops between client and server during checkout, the client retries but the server has already processed the first request, causing duplicate charges. About 0.2% of checkout sessions were affected. The fix uses an idempotency key derived from the cart hash + session ID, checked against a recent-charges table before issuing a new charge. The Plan investigation log lives at `docs/plans/2026-05-10-checkout-double-charge.md`.",
+      "expected_output": "PR description that follows the repository template literally: 1-2 line Summary, related links section pointing at #88 and the Plan, and the verification checklist. Internal mechanism details stay out of the Summary because the template says details go in commit messages.",
+      "files": [],
+      "assertions": [
+        "Output uses the exact template headings (## 概要, ## 関連リンク, ## 動作確認)",
+        "The Summary under ## 概要 is 1-2 lines, not the multi-paragraph Context/Approach/Outcome structure",
+        "The Summary does not contain mechanism details like idempotency key derivation or table names",
+        "Output references issue #88 or the Plan under ## 関連リンク",
+        "Output includes the verification checklist with items checked off",
+        "No em dashes in the output"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Write a PR description for the following changes. This is a bug fix PR with a multi-step reproduction.\n\nNo repository PR template exists.\n\nCommit log:\n- fix: gate form submit on navigation token\n- test: add e2e for back-then-resubmit scenario\n\nDiff summary:\n- Modified: checkout/ConfirmForm.tsx — submit handler now requires matching navigation token\n- Modified: checkout/useNavigationToken.ts — issues a new token per navigation\n- Modified: e2e/checkout.spec.ts — added a scenario that navigates back from confirmation, then re-submits\n\nContext: The checkout page intermittently double-submitted orders when users went back from the confirmation screen and pressed the confirm button again. About 0.4% of checkout sessions were affected over the past 7 days, and duplicate-charge alerts kept firing. The root cause is a race between the browser History API's popstate event and the SPA's navigation state, which leaves the submit handler bound to a stale navigation context. Full investigation (Chromium source references, React Router internals, alternative options considered including server-side idempotency keys) is documented in `docs/plans/2026-05-15-duplicate-checkout-investigation.md`. The plan link should be included in the PR.\n\nThe reproduction sequence is:\n1. User goes back from the confirmation screen to the input screen\n2. User presses the confirm button again without changing anything\n3. Submit handler re-fires with stale navigation state, server treats it as a separate request",
+      "expected_output": "PR description that leads with business impact (duplicate-charge alerts, 0.4% of sessions), uses a numbered list or structured form for the reproduction steps so reviewers can scan the flow, links to the Plan rather than inlining Chromium / React Router internals, and stays under the length guidance.",
+      "files": [],
+      "assertions": [
+        "Summary opens with business / operational impact (duplicate-charge alerts, percentage of affected sessions) before technical context",
+        "Reproduction steps are presented as a numbered list or under a clear subheading rather than crammed into one prose paragraph",
+        "Output links to the Plan (docs/plans/2026-05-15-duplicate-checkout-investigation.md) instead of inlining the investigation",
+        "Output does not contain Chromium internals, React Router useRef behavior, or other library internals in the Summary",
+        "Summary stays under roughly 1000 characters of Japanese (length guidance respected)",
+        "No em dashes in the output"
       ]
     }
   ]

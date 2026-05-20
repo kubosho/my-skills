@@ -134,9 +134,11 @@ No behavioral changes.
 
 | Version | Anti-pattern | Fix applied |
 |---|---|---|
-| v1 → v2 | Bullet list of diff changes | Added motivation (problem → solution) per change |
+| v1 → v2 | Bullet list of "what changed" instead of narrative of "why" | Added motivation (problem → solution) per change |
 | v2 → v3 | Implementation details mixed into Summary | Separated Summary from Changes |
 | v3 → v4 | Per-change paragraphs + redundant Changes section | Unified narrative with judgment in Summary, no Changes |
+
+The lesson here is about diff-restating bullet lists, not about lists in general. Lists are fine when they enumerate genuinely parallel items or sequential steps. They hurt when they replace a narrative with a flat retelling of the diff.
 
 ---
 
@@ -225,3 +227,87 @@ textlint は日本語の技術文書向けプリセットが充実しており�
 |---|---|---|
 | v1 → v2 | Implementation details in Summary, no judgment | Added motivation and tool selection reasoning |
 | v2 → v3 | Separate Changes section that restates the diff, unnecessary Test plan | Judgment folded into Summary paragraphs, no Changes, no Test plan |
+
+---
+
+# Bug-fix PR Example (multi-step reproduction)
+
+Real editing history from a bug-fix PR that went through 3 revisions. Covers the case the refactoring and tool-introduction examples don't: a bug whose reproduction is a multi-step sequence and whose root cause involves runtime internals. Structure (numbered lists, subheadings) helps reviewers scan the flow. Internal mechanism details belong in a linked Plan, not the Summary.
+
+## The PR
+
+A checkout page intermittently submits the order twice when the user navigates back from the confirmation screen and then re-submits. Roughly 0.4% of checkout sessions are affected, triggering duplicate-charge alerts. The fix gates the submit handler on a per-navigation token and links to the Plan that documents the History API behavior involved.
+
+## v1 — Prose-only, multi-step flow crammed into one paragraph
+
+```markdown
+## Summary
+
+決済確定画面で二重決済の問い合わせが断続的に発生していました。再現する流れとしては、ユーザーが確認画面から「戻る」で入力画面に戻り、もう一度「確認」ボタンを押すと submit ハンドラが過去のナビゲーションに紐づいた状態を保持したまま再発火し、サーバー側は別リクエストとして処理されるため同一注文が 2 件作成される、という挙動になっていました。修正としては、ナビゲーションごとにトークンを発行し、submit ハンドラがトークン不一致を検出した場合は早期 return するようにしました。
+```
+
+**Problems:**
+
+- 再現手順が 1 段落に詰め込まれており、レビュアーが流れを追うのに 2 回読み直す必要がある
+- 「ビジネス影響」（二重決済アラート / 影響セッション率）が冒頭にない。非エンジニアのレビュアーが温度感を掴めない
+- 「修正としては」が散文に埋もれており、変更の主軸がスキャンしづらい
+
+## v2 — Plan の内部解析まで PR Summary に流し込んだ過剰版
+
+```markdown
+## Summary
+
+決済確定画面で二重決済の問い合わせが断続的に発生していました。0.4% の checkout セッションが影響を受け、duplicate-charge アラートを継続的に発火させていました。
+
+ブラウザの History API では popstate イベント発火時に history entry の state が以前のスナップショットを保持し続けます。Chromium ソースを確認したところ、`NavigationController::HandleRendererDebugURL` 周辺で state restore のタイミングが session history の traversal direction によって変わるため、`history.replaceState` 直後の `popstate` で古い state が混入する可能性があります。さらに React Router の `useNavigate` は内部的に history.push を呼び出す前に `useRef` で保持した previous state を参照しており、これと組み合わさると submit ハンドラに渡される navigation context が 1 ステップ古い状態になります。
+
+このため、ナビゲーションごとにトークンを発行し、submit ハンドラがトークン不一致を検出した場合は早期 return するようにしました。トークン方式は厳密にはレースを完全に防ぐわけではありませんが、観測された不整合のうち 99% 以上はこのパスで吸収できます。RFC 7231 の冪等性ガイドラインも参照しましたが、今回のスコープでは冪等キーをサーバー側に追加するより前段で弾く方が低リスクと判断しました。
+
+なお、Safari と Firefox では再現せず、Chromium 系のみで観測されています。ただし他ブラウザでも同等の race が潜在的に起こりうるため、ブラウザ判定で分岐する方針は取りませんでした。
+```
+
+**Problems:**
+
+- Chromium 内部ソースの参照や React Router の `useRef` 挙動は Plan / 調査メモに残すべき内容で、PR Summary には冗長
+- 「99% 以上のパスで吸収」「RFC 7231 を参照したが冪等キーは見送り」といった alternative 検討の歴史も Plan のスコープ
+- 5 段落 / 約 1000 字に達しており、レビュアーが意思決定に必要な情報を取り出すコストが高い
+- 再現手順は依然として散文で、流れを追いづらい
+
+## v3 (final) — Business impact 冒頭 + 構造化された再現手順 + Plan へのリンク
+
+```markdown
+## Summary
+
+決済確定画面で二重決済の問い合わせが断続的に発生し、duplicate-charge アラートが継続発火していました。直近 7 日間で checkout セッションの約 0.4% が影響を受けています。
+
+再現する流れは以下です。
+
+1. ユーザーが確認画面から「戻る」で入力画面に戻る
+2. 入力画面で内容を変えずに「確認」ボタンを再度押す
+3. submit ハンドラが過去のナビゲーションに紐づいた state を保持したまま再発火し、サーバー側で別リクエストとして処理される
+
+根本原因はブラウザの History API と SPA のナビゲーション state 管理の組み合わせで発生する race です。詳細な解析は [Plan: 2026-05-15-duplicate-checkout-investigation](https://example.invalid/plans/2026-05-15-duplicate-checkout-investigation) にまとめています。
+
+### 修正内容
+
+1. ナビゲーションごとにトークンを発行し、submit ハンドラの引数として渡す
+2. submit ハンドラはトークン不一致を検出した場合に早期 return する
+3. token 発行の単体テストと、戻る→再 submit のシナリオを E2E に追加する
+
+冪等キーをサーバー側に追加する案も検討しましたが、Plan に記載のとおり今回のスコープでは見送っています。
+```
+
+**Why this works:**
+
+- 冒頭で「二重決済」「アラート発火」「影響セッション率」を提示し、非エンジニアのレビュアーも温度感を共有できる
+- 再現手順を番号付きリストにしたことで、レビュアーは流れを 1 回スキャンするだけで把握できる
+- 内部メカニズム（History API の挙動、React Router の挙動、Chromium 内部）はすべて Plan へのリンクに集約し、Summary は意思決定と結果に集中している
+- `### 修正内容` 見出しで「現象」と「対策」が視覚的に分離され、長めの Summary でもスクロールしやすい
+- 検討して見送った代替案は 1 行 + リンクで触れるだけで、Plan の議論を Summary に流し込んでいない
+
+## Summary of the progression
+
+| Version | Anti-pattern | Fix applied |
+|---|---|---|
+| v1 → v2 | 多段の再現手順を 1 段落に圧縮、ビジネス影響なし | ビジネス影響を冒頭に追加、根本原因に踏み込んだ |
+| v2 → v3 | Plan / 調査メモの内部解析を Summary に流し込み、長大化 | 内部詳細は Plan リンクに外出し、再現手順を番号付きリストで構造化、検討済み代替案は 1 行に圧縮 |
