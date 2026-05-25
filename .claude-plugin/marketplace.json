@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "kubosho's Claude Code skills",
-    "version": "2.4.0"
+    "version": "2.4.1"
   },
   "plugins": [
     {
@@ -33,7 +33,7 @@
       "name": "test-principles",
       "source": "./plugins/test-principles",
       "description": "Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "category": "development"
     }
   ]
