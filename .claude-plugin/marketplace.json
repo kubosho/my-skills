@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "kubosho's Claude Code skills",
-    "version": "2.4.1"
+    "version": "2.5.0"
   },
   "plugins": [
     {
@@ -21,13 +21,6 @@
       "description": "Check Baseline status of web features using the Web Platform Status API",
       "version": "2.1.1",
       "category": "development"
-    },
-    {
-      "name": "pr-description",
-      "source": "./plugins/pr-description",
-      "description": "Write narrative-driven PR descriptions that honor the repository's PR template and respect the boundary between PR Summary, commit messages, and design docs",
-      "version": "2.4.0",
-      "category": "productivity"
     },
     {
       "name": "test-principles",
