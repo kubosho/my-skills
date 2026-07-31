@@ -41,7 +41,7 @@ Read top to bottom. Stop at the first matching question.
    → MCP server. Skills can call MCP tools, but the integration itself belongs in MCP.
 
 5. **Is this a procedure or knowledge body the user invokes by name, with possible arguments?**
-   Examples: `/commit`, `/deploy`, `/summarize-changes`, `/pr-description`, a coding style reference Claude should consult.
+   Examples: `/commit`, `/deploy`, `/summarize-changes`, a coding style reference Claude should consult.
    → **Skill.** Pick the sub-pattern below.
 
 6. **Is this a specialist role that needs its own isolated context, its own tool set, or that should run in parallel with other work?**
