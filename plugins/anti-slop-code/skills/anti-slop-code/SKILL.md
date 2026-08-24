@@ -1,6 +1,7 @@
 ---
 name: anti-slop-code
 description: Write intentional, minimal, context-aware code that avoids generic AI-generated patterns. Use this skill when refactoring code, when the user asks to simplify or clean up code, or when writing new code with explicit instructions to keep it simple or minimal. Also trigger when the user mentions "slop", "over-engineering", "too verbose", "unnecessary abstraction", or similar concerns about code quality. This skill helps produce code that reads like it was written by a thoughtful human engineer who understands the specific codebase and problem domain.
+model: opus
 ---
 
 Every line of code must justify its existence. If you cannot explain why a line is necessary for THIS problem in THIS codebase, delete it.

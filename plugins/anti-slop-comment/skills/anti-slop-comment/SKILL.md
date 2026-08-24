@@ -1,6 +1,7 @@
 ---
 name: anti-slop-comment
 description: Write only code comments that carry information the code and tests cannot. Use this skill when writing or reviewing code comments, when the user asks to clean up, reduce, or audit comments, or when deciding whether a comment is worth keeping. Also trigger when the user mentions redundant comments, restating comments, "comment slop", or asks what deserves a comment.
+model: opus
 ---
 
 Comments pass no checks. Code goes through the compiler, tests, and the linter, so a wrong line is rejected in minutes. A wrong comment survives until someone happens to reread it. Nothing removes unnecessary comments later, so the only control point is whether you write them.
