@@ -1,0 +1,11 @@
+name: anti-slop-code
+version: 3.0.0
+description: Write intentional, minimal, context-aware code that avoids generic AI-generated patterns
+author:
+  name: kubosho
+license: MIT
+includes:
+  - skills/anti-slop-code/SKILL.md
+dependencies:
+  apm: []
+  mcp: []

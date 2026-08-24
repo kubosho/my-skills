@@ -1,0 +1,11 @@
+name: anti-slop-comment
+version: 1.0.0
+description: Write only code comments that carry information the code and tests cannot
+author:
+  name: kubosho
+license: MIT
+includes:
+  - skills/anti-slop-comment/SKILL.md
+dependencies:
+  apm: []
+  mcp: []
