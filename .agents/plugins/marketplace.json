@@ -1,0 +1,56 @@
+{
+  "name": "kubosho-skills",
+  "interface": {
+    "displayName": "kubosho-skills"
+  },
+  "plugins": [
+    {
+      "name": "anti-slop-code",
+      "source": {
+        "source": "local",
+        "path": "./plugins/anti-slop-code"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "productivity"
+    },
+    {
+      "name": "anti-slop-comment",
+      "source": {
+        "source": "local",
+        "path": "./plugins/anti-slop-comment"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "productivity"
+    },
+    {
+      "name": "baseline",
+      "source": {
+        "source": "local",
+        "path": "./plugins/baseline"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "development"
+    },
+    {
+      "name": "test-principles",
+      "source": {
+        "source": "local",
+        "path": "./plugins/test-principles"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "development"
+    }
+  ]
+}
