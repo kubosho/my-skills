@@ -1,40 +1,37 @@
 {
   "name": "kubosho-skills",
   "owner": {
-    "name": "kubosho"
-  },
-  "metadata": {
-    "description": "kubosho's Claude Code skills",
-    "version": "2.6.0"
+    "name": "kubosho",
+    "url": "https://github.com/kubosho"
   },
   "plugins": [
     {
       "name": "anti-slop-code",
-      "source": "./plugins/anti-slop-code",
       "description": "Write intentional, minimal, context-aware code that avoids generic AI-generated patterns",
       "version": "3.0.0",
-      "category": "productivity"
+      "category": "productivity",
+      "source": "./plugins/anti-slop-code"
     },
     {
       "name": "anti-slop-comment",
-      "source": "./plugins/anti-slop-comment",
       "description": "Write only code comments that carry information the code and tests cannot",
       "version": "1.0.0",
-      "category": "productivity"
+      "category": "productivity",
+      "source": "./plugins/anti-slop-comment"
     },
     {
       "name": "baseline",
-      "source": "./plugins/baseline",
       "description": "Check Baseline status of web features using the Web Platform Status API",
       "version": "2.1.1",
-      "category": "development"
+      "category": "development",
+      "source": "./plugins/baseline"
     },
     {
       "name": "test-principles",
-      "source": "./plugins/test-principles",
       "description": "Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada",
       "version": "2.1.2",
-      "category": "development"
+      "category": "development",
+      "source": "./plugins/test-principles"
     }
   ]
 }

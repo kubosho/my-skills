@@ -1,0 +1,39 @@
+name: kubosho-skills
+version: 2.6.0
+description: kubosho's Claude Code skills
+author:
+  name: kubosho
+license: MIT
+
+marketplace:
+  owner:
+    name: kubosho
+    url: https://github.com/kubosho
+  versioning:
+    strategy: per_package
+  outputs:
+    claude:
+      path: .claude-plugin/marketplace.json
+    codex:
+      path: .agents/plugins/marketplace.json
+  packages:
+    - name: anti-slop-code
+      source: ./plugins/anti-slop-code
+      description: Write intentional, minimal, context-aware code that avoids generic AI-generated patterns
+      version: 3.0.0
+      category: productivity
+    - name: anti-slop-comment
+      source: ./plugins/anti-slop-comment
+      description: Write only code comments that carry information the code and tests cannot
+      version: 1.0.0
+      category: productivity
+    - name: baseline
+      source: ./plugins/baseline
+      description: Check Baseline status of web features using the Web Platform Status API
+      version: 2.1.1
+      category: development
+    - name: test-principles
+      source: ./plugins/test-principles
+      description: Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada
+      version: 2.1.2
+      category: development

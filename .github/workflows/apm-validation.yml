@@ -1,0 +1,36 @@
+name: Validate APM marketplace
+
+on:
+  pull_request:
+    paths:
+      - apm.yml
+      - plugins/**
+      - .agents/plugins/marketplace.json
+      - .claude-plugin/marketplace.json
+      - scripts/verify-apm-install.sh
+      - .github/workflows/apm-validation.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install APM CLI
+        uses: microsoft/apm-action@d723bb64ed70c135bbaf87d126b721dd2dae0439
+        with:
+          apm-version: 0.28.0
+          setup-only: true
+      - name: Validate package definitions
+        run: |
+          apm --version | grep -Fq 'version 0.28.0 '
+          apm pack --check-versions --dry-run
+          for plugin in anti-slop-code anti-slop-comment baseline test-principles; do
+            (cd "plugins/$plugin" && apm pack --dry-run --verbose)
+          done
+      - name: Check generated marketplaces
+        run: apm pack --check-clean --dry-run
+      - name: Check individual installations
+        run: scripts/verify-apm-install.sh

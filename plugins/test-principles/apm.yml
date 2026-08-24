@@ -1,0 +1,11 @@
+name: test-principles
+version: 2.1.2
+description: Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada
+author:
+  name: kubosho
+license: MIT
+includes:
+  - skills/test-principles/SKILL.md
+dependencies:
+  apm: []
+  mcp: []
