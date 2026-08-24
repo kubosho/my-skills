@@ -7,6 +7,7 @@ A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-market
 | Skill | Description |
 |-------|-------------|
 | `anti-slop-code` | Write intentional, minimal code that avoids generic AI-generated patterns |
+| `anti-slop-comment` | Write only code comments that carry information the code and tests cannot |
 | `baseline` | Check Baseline status of web features via Web Platform Status API |
 | `test-principles` | Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada |
 
@@ -17,6 +18,7 @@ Add the marketplace and install individual skills:
 ```shell
 /plugin marketplace add kubosho/my-skills
 /plugin install anti-slop-code@kubosho-skills
+/plugin install anti-slop-comment@kubosho-skills
 /plugin install baseline@kubosho-skills
 /plugin install test-principles@kubosho-skills
 ```
@@ -28,6 +30,7 @@ git clone https://github.com/kubosho/my-skills.git
 
 # Symlink each skill you want to use
 ln -s /path/to/my-skills/plugins/anti-slop-code ~/.claude/skills/anti-slop-code
+ln -s /path/to/my-skills/plugins/anti-slop-comment ~/.claude/skills/anti-slop-comment
 ln -s /path/to/my-skills/plugins/baseline ~/.claude/skills/baseline
 ln -s /path/to/my-skills/plugins/test-principles ~/.claude/skills/test-principles
 ```

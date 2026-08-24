@@ -1,0 +1,8 @@
+{
+  "name": "anti-slop-comment",
+  "description": "Write only code comments that carry information the code and tests cannot",
+  "version": "1.0.0",
+  "author": {
+    "name": "kubosho"
+  }
+}
