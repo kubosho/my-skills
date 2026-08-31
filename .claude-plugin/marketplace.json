@@ -27,6 +27,13 @@
       "source": "./plugins/baseline"
     },
     {
+      "name": "spec-driven-development",
+      "description": "Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it",
+      "version": "1.0.0",
+      "category": "development",
+      "source": "./plugins/spec-driven-development"
+    },
+    {
       "name": "test-principles",
       "description": "Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada",
       "version": "2.1.2",
