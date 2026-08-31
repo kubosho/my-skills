@@ -1,0 +1,17 @@
+name: spec-driven-development
+version: 1.0.0
+description: "Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it"
+author:
+  name: kubosho
+license: MIT
+includes:
+  - skills/spec-driven-development/SKILL.md
+  - skills/spec-authoring/SKILL.md
+  - skills/spec-authoring/_template.md
+  - skills/spec-implement/SKILL.md
+  - skills/spec-implementation-check/SKILL.md
+  - skills/spec-implementation-check/spec-scope-check.sh
+  - agents/negative-requirements-reviewer.md
+dependencies:
+  apm: []
+  mcp: []
