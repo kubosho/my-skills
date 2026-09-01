@@ -1,0 +1,8 @@
+{
+  "name": "devnavi",
+  "description": "Pair-programming learning support for code you write yourself: start, get unstuck, review, and wrap up",
+  "version": "1.0.0",
+  "author": {
+    "name": "kubosho"
+  }
+}

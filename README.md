@@ -9,8 +9,11 @@ A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-market
 | `anti-slop-code` | `anti-slop-code` | Write intentional, minimal code that avoids generic AI-generated patterns |
 | `anti-slop-comment` | `anti-slop-comment` | Write only code comments that carry information the code and tests cannot |
 | `baseline` | `baseline` | Check Baseline status of web features via Web Platform Status API |
+| `devnavi` | `devnavi-init`, `devnavi-stuck`, `devnavi-review`, `devnavi-wrapup` | Pair-programming learning support for code you write yourself: start, get unstuck, review, and wrap up |
 | `spec-driven-development` | `spec-driven-development`, `spec-authoring`, `spec-implement`, `spec-implementation-check` | Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it |
 | `test-principles` | `test-principles` | Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada |
+
+`devnavi` bundles the steps of one pair-programming session, so they ship as one plugin. The skills are independent of each other and can be used on their own.
 
 `spec-driven-development` bundles skills that depend on each other, so they ship as one plugin. It also bundles a `negative-requirements-reviewer` subagent that `spec-implementation-check` calls.
 
@@ -23,6 +26,7 @@ Add the marketplace and install individual plugins:
 /plugin install anti-slop-code@kubosho-skills
 /plugin install anti-slop-comment@kubosho-skills
 /plugin install baseline@kubosho-skills
+/plugin install devnavi@kubosho-skills
 /plugin install spec-driven-development@kubosho-skills
 /plugin install test-principles@kubosho-skills
 ```
@@ -37,6 +41,7 @@ apm marketplace add kubosho/my-skills --name kubosho-skills
 apm install anti-slop-code@kubosho-skills --target agent-skills
 apm install anti-slop-comment@kubosho-skills --target agent-skills
 apm install baseline@kubosho-skills --target agent-skills
+apm install devnavi@kubosho-skills --target agent-skills
 apm install spec-driven-development@kubosho-skills --target agent-skills
 apm install test-principles@kubosho-skills --target agent-skills
 ```
@@ -54,6 +59,7 @@ apm marketplace add kubosho/my-skills --name kubosho-skills
 apm install anti-slop-code@kubosho-skills --target codex
 apm install anti-slop-comment@kubosho-skills --target codex
 apm install baseline@kubosho-skills --target codex
+apm install devnavi@kubosho-skills --target codex
 apm install spec-driven-development@kubosho-skills --target codex
 apm install test-principles@kubosho-skills --target codex
 ```
@@ -70,6 +76,12 @@ ln -s /path/to/my-skills/plugins/anti-slop-code/skills/anti-slop-code ~/.claude/
 ln -s /path/to/my-skills/plugins/anti-slop-comment/skills/anti-slop-comment ~/.claude/skills/anti-slop-comment
 ln -s /path/to/my-skills/plugins/baseline/skills/baseline ~/.claude/skills/baseline
 ln -s /path/to/my-skills/plugins/test-principles/skills/test-principles ~/.claude/skills/test-principles
+
+# devnavi ships several skills
+ln -s /path/to/my-skills/plugins/devnavi/skills/devnavi-init ~/.claude/skills/devnavi-init
+ln -s /path/to/my-skills/plugins/devnavi/skills/devnavi-stuck ~/.claude/skills/devnavi-stuck
+ln -s /path/to/my-skills/plugins/devnavi/skills/devnavi-review ~/.claude/skills/devnavi-review
+ln -s /path/to/my-skills/plugins/devnavi/skills/devnavi-wrapup ~/.claude/skills/devnavi-wrapup
 
 # spec-driven-development ships several skills plus a subagent
 ln -s /path/to/my-skills/plugins/spec-driven-development/skills/spec-driven-development ~/.claude/skills/spec-driven-development
