@@ -1,0 +1,8 @@
+{
+  "name": "spec-driven-development",
+  "description": "Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it",
+  "version": "1.0.0",
+  "author": {
+    "name": "kubosho"
+  }
+}
