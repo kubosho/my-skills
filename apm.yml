@@ -32,6 +32,11 @@ marketplace:
       description: Check Baseline status of web features using the Web Platform Status API
       version: 2.1.1
       category: development
+    - name: devnavi
+      source: ./plugins/devnavi
+      description: "Pair-programming learning support for code you write yourself: start, get unstuck, review, and wrap up"
+      version: 1.0.0
+      category: development
     - name: spec-driven-development
       source: ./plugins/spec-driven-development
       description: "Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it"
