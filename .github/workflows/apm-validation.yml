@@ -26,7 +26,7 @@ jobs:
         run: |
           apm --version | grep -Fq 'version 0.28.0 '
           apm pack --check-versions --dry-run
-          for plugin in anti-slop-code anti-slop-comment baseline spec-driven-development test-principles; do
+          for plugin in anti-slop-code anti-slop-comment baseline devnavi spec-driven-development test-principles; do
             (cd "plugins/$plugin" && apm pack --dry-run --verbose)
           done
       - name: Check generated marketplaces
