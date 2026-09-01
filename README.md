@@ -66,10 +66,10 @@ Alternatively, clone the repository and symlink individual skills:
 git clone https://github.com/kubosho/my-skills.git
 
 # Symlink each skill you want to use
-ln -s /path/to/my-skills/plugins/anti-slop-code ~/.claude/skills/anti-slop-code
-ln -s /path/to/my-skills/plugins/anti-slop-comment ~/.claude/skills/anti-slop-comment
-ln -s /path/to/my-skills/plugins/baseline ~/.claude/skills/baseline
-ln -s /path/to/my-skills/plugins/test-principles ~/.claude/skills/test-principles
+ln -s /path/to/my-skills/plugins/anti-slop-code/skills/anti-slop-code ~/.claude/skills/anti-slop-code
+ln -s /path/to/my-skills/plugins/anti-slop-comment/skills/anti-slop-comment ~/.claude/skills/anti-slop-comment
+ln -s /path/to/my-skills/plugins/baseline/skills/baseline ~/.claude/skills/baseline
+ln -s /path/to/my-skills/plugins/test-principles/skills/test-principles ~/.claude/skills/test-principles
 
 # spec-driven-development ships several skills plus a subagent
 ln -s /path/to/my-skills/plugins/spec-driven-development/skills/spec-driven-development ~/.claude/skills/spec-driven-development
