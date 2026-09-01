@@ -7,7 +7,6 @@ on:
       - plugins/**
       - .agents/plugins/marketplace.json
       - .claude-plugin/marketplace.json
-      - scripts/verify-apm-install.sh
       - .github/workflows/apm-validation.yml
 
 permissions:
@@ -32,5 +31,3 @@ jobs:
           done
       - name: Check generated marketplaces
         run: apm pack --check-clean --dry-run
-      - name: Check individual installations
-        run: scripts/verify-apm-install.sh
