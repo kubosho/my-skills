@@ -1,0 +1,14 @@
+name: devnavi
+version: 1.0.0
+description: "Pair-programming learning support for code you write yourself: start, get unstuck, review, and wrap up"
+author:
+  name: kubosho
+license: MIT
+includes:
+  - skills/devnavi-init/SKILL.md
+  - skills/devnavi-stuck/SKILL.md
+  - skills/devnavi-review/SKILL.md
+  - skills/devnavi-wrapup/SKILL.md
+dependencies:
+  apm: []
+  mcp: []
