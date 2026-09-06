@@ -12,6 +12,8 @@ The user owns and approves the purpose, acceptance criteria, negative requiremen
 
 Draft, refine, and point out ambiguity. Ask for missing decisions one at a time, but inspect the codebase instead when it can answer the question.
 
+The spec is the final requirement for implementation and review agents. Keep each section to its defined content, without work notes, supplementary remarks, or investigation findings. Record design decisions and reasons in the appropriate section, ask in your response when the user must decide, and discard the rest.
+
 Before declaring the spec settled, verify:
 
 - The purpose section states the current problem, the solution applied, and what to build, in that order, in a form that can be skimmed. Design decisions do not accumulate in the purpose section.
@@ -19,6 +21,7 @@ Before declaring the spec settled, verify:
 - Each AC bullet is written as an observable outcome (input or operation, then expected result), with no design decisions left to the implementer.
 - A failing test can be written directly from each AC bullet, before any implementation code. When the AC has no runnable behavior, an existence check takes the place of the test.
 - No unresolved items (TBD, 要検討, 〜かもしれない) remain in the spec body.
+- No work notes, supplementary remarks, or investigation findings remain in the spec.
 - The scope limit has concrete numbers.
 
 While any check fails, the spec is not settled and implementation does not start.

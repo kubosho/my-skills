@@ -1,5 +1,5 @@
 name: spec-driven-development
-version: 1.0.0
+version: 1.0.1
 description: "Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it"
 author:
   name: kubosho
