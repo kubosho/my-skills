@@ -8,9 +8,11 @@ Check the current implementation diff against the given spec.
 
 If no spec path is provided, ask for it.
 
-1. Run the project's narrowest relevant test command, or the AC's existence check when the AC has no runnable behavior.
-2. Read the current diff.
-3. Ask `negative-requirements-reviewer` to compare the diff with the spec's negative requirements.
+Read the entire spec and identify the target AC-N task, whose acceptance-criterion bullets are all part of this check. Follow the existing spec compatibility rules in `../spec-driven-development/SKILL.md` for old-format specs, without rewriting their structure.
+
+1. Run the project's narrowest relevant tests or existence checks covering all acceptance criteria of the target task. Compare the results and implementation with the task's opening explanation, common technical constraints, task-specific technical constraints, and explicitly referenced definitions and reasons. Follow further references as needed. Check that dependencies and operational start conditions were satisfied, not merely that dependency tasks were marked complete. Report contradictions or uncovered requirements rather than treating passing tests as sufficient. Include affected existing behavior protected by other tasks in the check, without requiring unrelated unfinished tasks to be implemented. Report these results under Axis A.
+2. Read the current diff against those requirements, including requirements that cannot be verified by running tests alone.
+3. Ask `negative-requirements-reviewer` to compare the diff with the spec's negative requirements. Provide the entire spec, the target task identifier, and the diff, not just the target task's section. The review includes common requirements, the target task, explicit reference destinations, and prohibitions in other tasks that protect behavior affected by the diff. Report its candidates under Axis B.
 4. Run `spec-scope-check.sh <spec-path>` to compare the current diff with the spec's scope limit. The script sits in the same directory as this SKILL.md.
 5. Report Axis A, Axis B, Axis C, and the final judgement.
 
