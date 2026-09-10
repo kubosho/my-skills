@@ -1,6 +1,6 @@
 ---
 name: spec-implement
-description: Implement one acceptance criterion from a spec as a transcription of the settled design. Use when starting implementation work on a spec, or when asked to implement an AC.
+description: Implement one acceptance criterion (AC) from a spec's settled design. Use for spec-based implementation.
 argument-hint: "<docs/specs/spec-file.md or GitHub Issue URL> [AC-N]"
 ---
 
