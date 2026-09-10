@@ -40,7 +40,7 @@ marketplace:
     - name: spec-driven-development
       source: ./plugins/spec-driven-development
       description: "Run spec-driven development: author a spec, implement one task identified by AC-N, and check the diff against it"
-      version: 1.0.1
+      version: 1.1.0
       category: development
     - name: test-principles
       source: ./plugins/test-principles
