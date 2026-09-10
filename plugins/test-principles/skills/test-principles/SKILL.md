@@ -1,6 +1,6 @@
 ---
 name: test-principles
-description: Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada. This skill MUST be used whenever writing or modifying implementation code — tests are part of implementation, not a separate step. Also use when writing tests, asked to "write tests", "add tests", "test this", reviewing or auditing existing tests, "review tests", "check test quality", "テストを書いて", or "テスト原則". If you are implementing a feature or fixing a bug, this skill applies.
+description: Write and review behavior-focused automated tests. MUST use when writing or modifying implementation code, and when writing or reviewing tests.
 ---
 
 # Automated Test Principles
