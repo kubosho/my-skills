@@ -1,6 +1,6 @@
 name: spec-driven-development
-version: 1.0.2
-description: "Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it"
+version: 1.1.0
+description: "Run spec-driven development: author a spec, implement one task identified by AC-N, and check the diff against it"
 author:
   name: kubosho
 license: MIT

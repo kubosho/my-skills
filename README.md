@@ -10,7 +10,7 @@ A [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-market
 | `anti-slop-comment` | `anti-slop-comment` | Write only code comments that carry information the code and tests cannot |
 | `baseline` | `baseline` | Check Baseline status of web features via Web Platform Status API |
 | `devnavi` | `devnavi-init`, `devnavi-stuck`, `devnavi-review`, `devnavi-wrapup` | Pair-programming learning support for code you write yourself: start, get unstuck, review, and wrap up |
-| `spec-driven-development` | `spec-driven-development`, `spec-authoring`, `spec-implement`, `spec-implementation-check` | Run spec-driven development: author a spec, implement one acceptance criterion, and check the diff against it |
+| `spec-driven-development` | `spec-driven-development`, `spec-authoring`, `spec-implement`, `spec-implementation-check` | Run spec-driven development: author a spec, implement one task identified by AC-N, and check the diff against it |
 | `test-principles` | `test-principles` | Principles for writing high-quality automated tests, based on Kent Beck, Kent C. Dodds, and t-wada |
 
 `devnavi` bundles the steps of one pair-programming session, so they ship as one plugin. The skills are independent of each other and can be used on their own.
